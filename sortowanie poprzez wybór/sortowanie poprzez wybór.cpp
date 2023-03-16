@@ -2,6 +2,7 @@
 //
 
 #include <iostream>
+#include <vector>
 using namespace std;
 
 int main()
@@ -12,13 +13,15 @@ int main()
 
     cout << "Podaj wielosc tablicy: ";
     cin >> array_size;
-    double* arr = new double[array_size];
-    double* help_array = new double[array_size];
+    vector <double> arr;
+    vector <double> help_array;
+    arr.reserve(array_size);
+    help_array.reserve(array_size);
     for(int i=0;i<array_size;i++){
         value = 0;
         cout << "Podaj " << i+1 << " wartosc:";
         cin >> value;
-        arr[i] = value;
+        arr.push_back(value);
     }
     cout << "Twoja tablica:" << endl;
     cout << "[";
@@ -34,44 +37,22 @@ int main()
     cin >> choice;
     cout << endl;
     // Sortowanie malejaco
-    if(choice==1){
-        double highest;
-        int highest_index;
-        for (int i = 0; i < array_size; i++) {
-            highest = arr[0];
-            highest_index = 0;
-            for (int j = 0; j < array_size; j++) {
-                if (highest < arr[j]) {
-                    highest = arr[j];
-                    highest_index = j;
-                }
+    double highest;
+    int highest_index;
+    for (int i = 0; i < array_size; i++) {
+        highest = arr[0];
+        highest_index = 0;
+        for (int j = 0; j < array_size; j++) {
+            if (highest < arr[j]) {
+                highest = arr[j];
+                highest_index = j;
             }
-            help_array[i] = arr[highest_index];
-            arr[highest_index] = 0;
         }
+        help_array[i] = arr[highest_index];
+        arr.erase(arr.begin() + highest_index);
     }
-    // Sortowanie rosnaco
-    else if(choice==2){
-        double lowest;
-        int lowest_index;
-        for (int i = 0; i < array_size; i++) {
-            lowest = arr[0];
-            lowest_index = 0;
-            for (int j = 0; j < array_size; j++) {
-                if (lowest > arr[j]) {
-                    lowest = arr[j];
-                    lowest_index = j;
-                }
-            }
-            help_array[i] = arr[lowest_index];
-            // pytanie jak usunac element z tablicy
-        }
-    }
+
     //----------------------------------------------------------
-    else{
-        cout << "Podano zla wartosc";
-        return 0;
-    }
 
 
 
@@ -86,10 +67,11 @@ int main()
     }
     cout << "]";
 
-    delete[] arr;
-    delete[] help_array;
+    arr.clear();
+    help_array.clear();
     //{}
 }
+
 
 // Uruchomienie programu: Ctrl + F5 lub menu Debugowanie > Uruchom bez debugowania
 // Debugowanie programu: F5 lub menu Debugowanie > Rozpocznij debugowanie
